@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-
-//Added a text
-
+//Centerd Text
 void main() {
-  runApp(MaterialApp(home:Text("Varanasi Software Junction")));
-}
+  runApp(
+    MaterialApp(
+      home: Center(
+        child: Text("Varanasi Software Junction"),
+      ),
+    ),
+  );
 
- // runApp(Material(home:Text("Pillikothi junction")));
+}
