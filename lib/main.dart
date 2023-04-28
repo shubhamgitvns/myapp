@@ -52,15 +52,31 @@ class VSJQuiz extends StatefulWidget {
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
-  List<Widget> scores=[
-    const Icon(
-        Icons.check,
-        color: Colors.green
-    )
-    ,const Icon(
-        Icons.close,
-        color: Colors.red
-    ),];
+  List<Widget> scores=[];
+  //Create a logic
+  void addResult(bool a) //Create integer a
+  {
+    //scores.clear();
+    if(a)
+    {
+      scores.add(
+
+          const Icon(
+              Icons.check, //Check Icon
+              color: Colors.green //Icon color
+          )
+      );
+    }
+    else {
+      scores.add(
+
+          const Icon(
+              Icons.close,
+              color: Colors.red
+          )
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,7 +84,7 @@ class _VSJQuizState extends State<VSJQuiz> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[ //Using Widget It is automatic create icons according,
         //your answer
-        Expanded(
+        const Expanded(
           flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
@@ -99,6 +115,9 @@ class _VSJQuizState extends State<VSJQuiz> {
               ),
               onPressed: () {
                 print("Submitted True");
+                setState(() {
+                  addResult(true); //Call addresult fun()
+                });
               },
             ),
           ),
@@ -117,6 +136,9 @@ class _VSJQuizState extends State<VSJQuiz> {
               ),
               onPressed: () {
                 print("Submitted False");
+                setState(() {
+                  addResult(false); //Call addresult fun()
+                });
               },
             ),
           ),
