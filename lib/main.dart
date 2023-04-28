@@ -10,12 +10,15 @@ class VSJQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          title: const Card(
-              child: Text(
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.teal,
+              title: Card(
+                  child: Text(
                 "Quiz App",
                 style: TextStyle(
                   fontSize: 40,
@@ -23,16 +26,15 @@ class VSJQuizApp extends StatelessWidget {
                   backgroundColor: Colors.teal,
                 ),
               )),
-          centerTitle: true,
-        ),
-
-
-
-        backgroundColor: Colors.grey.shade900,
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: VSJQuiz(),
+              centerTitle: true,
+            ),
+            backgroundColor: Colors.grey.shade900,
+            body: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: VSJQuiz(),
+              ),
+            ),
           ),
         ),
       ),
@@ -40,57 +42,79 @@ class VSJQuizApp extends StatelessWidget {
   }
 }
 
-
-
-
-
-
-
 class VSJQuiz extends StatefulWidget {
   @override
   _VSJQuizState createState() => _VSJQuizState();
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
-  List<Widget> scores=[];
-  //Create a logic
-  void addResult(bool a) //Create integer a
-  {
+  String currentquestiontext = "Press any button to start the quiz";
+  int questionno = -1;
+  int correctanswers = 0;
+  bool isTestOver = false;
+  List<Question> questions = [
+    new Question("C is a programming language? T/F", true),
+    new Question("C++ is not an object oriented language.. T/F", false),
+    new Question("Python has dictionary.. T/F", true),
+    new Question("Hukulganj is the capital of Japan T/F", false),
+    new Question("Shubham Is Cr In The Class",false)
+  ];
+  Question? currentquestion;
+  List<Widget> scores = [];
+
+  void setQuestion(bool b) {
+    //isTestOver=false;
+    //questionno=-1;
     //scores.clear();
-    if(a)
-    {
-      scores.add(
 
-          const Icon(
-              Icons.check, //Check Icon
-              color: Colors.green //Icon color
-          )
-      );
+    if (isTestOver) return;
+
+    if (questionno == -1) {
+      questionno++;
+      currentquestion = questions[questionno];
+      currentquestiontext = currentquestion!.question;
+      return;
     }
-    else {
-      scores.add(
 
-          const Icon(
-              Icons.close,
-              color: Colors.red
-          )
-      );
+    if (questionno >= questions.length - 1) {
+      addResult(b);
+      currentquestiontext = "Questions Over. Correct answers = $correctanswers";
+      isTestOver = true;
+      return;
+    }
+
+    addResult(b);
+    questionno++;
+    if (questionno <= questions.length - 1) {
+      currentquestion = questions[questionno];
+      currentquestiontext = currentquestion!.question;
     }
   }
+
+  void addResult(bool b) {
+    bool iscorrect = b == currentquestion!.correctAnswer;
+    //scores.clear();
+    if (iscorrect) {
+      correctanswers++;
+      scores.add(Icon(Icons.check, color: Colors.green));
+    } else {
+      scores.add(Icon(Icons.close, color: Colors.red));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[ //Using Widget It is automatic create icons according,
-        //your answer
-        const Expanded(
+      children: <Widget>[
+        Expanded(
           flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'Question Will Come Here',
+                currentquestiontext,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -102,32 +126,37 @@ class _VSJQuizState extends State<VSJQuiz> {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.0),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-
-              child: const Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  minimumSize: const Size.fromHeight(50),
                 ),
-              ),
-              onPressed: () {
-                print("Submitted True");
-                setState(() {
-                  addResult(true); //Call addresult fun()
-                });
-              },
-            ),
+                child: Text(
+                  'True',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+                onPressed: () {
+                  print("Submitted True");
+                  setState(() {
+                    // addResult(true);
+                    setQuestion(true);
+                  });
+                }),
           ),
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.0),
             child: ElevatedButton(
-             style: ElevatedButton.styleFrom(primary: Colors.red),
-              child: const Text(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red,
+                minimumSize: const Size.fromHeight(50),
+              ),
+              child: Text(
                 'False',
                 style: TextStyle(
                   fontSize: 20.0,
@@ -137,18 +166,27 @@ class _VSJQuizState extends State<VSJQuiz> {
               onPressed: () {
                 print("Submitted False");
                 setState(() {
-                  addResult(false); //Call addresult fun()
+                  // addResult(false);
+                  setQuestion(false);
                 });
               },
             ),
           ),
         ),
-        Row
-          (
-          children:scores, //Scores Row
-
+        Row(
+          children: scores,
         ),
       ],
     );
+  }
+}
+
+class Question {
+  String question = "";
+  bool correctAnswer = false;
+
+  Question(String question, bool correctAnswer) {
+    this.question = question;
+    this.correctAnswer = correctAnswer;
   }
 }
