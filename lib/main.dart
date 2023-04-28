@@ -11,8 +11,22 @@ class VSJQuizApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.teal,
+          title: const Card(      // It is like a box shadow in css like 3D
+              child: Text(
+            "Quiz App",
+            style: TextStyle(     //Texting Style
+              fontSize: 40,
+              fontWeight: FontWeight.w100,
+              backgroundColor: Colors.teal,
+              color: Colors.white
+            ),
+          )),
+          centerTitle: true, //Text Move In Center On The Screen
+        ),
         //Move In The Body
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey.shade800,
         body: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.0),
@@ -32,26 +46,65 @@ class VSJQuiz extends StatefulWidget {
 class _VSJQuizState extends State<VSJQuiz> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          //This sample demonstrates how to mix and match text with different text styles using the RichText Widget.
-          // It displays the text "Hello bold world," emphasizing the word "bold" using a bold font weight.
-          RichText(
-            text: TextSpan(
-              text: 'Hello ',
-              style: DefaultTextStyle.of(context).style,
-              children: const <TextSpan>[
-                TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
-                TextSpan(text: ' world!',style: TextStyle(fontSize: 40,color: Colors.cyan)),
-              ],
-            ),
-          )
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
 
-          //TODO: Add a Row here as your score keeper
-        ],
-      ),
+        Expanded(
+          flex: 5, //Column Flex
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                'Question Will Come Here',
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+              child: const Text(
+                'True',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              onPressed: () {
+                print("Submitted True");
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(primary: Colors.red),
+              child: const Text(
+                'False',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                print("Submitted False");
+              },
+            ),
+          ),
+        ),
+        //TODO: Add a Row here as your score keeper
+      ],
     );
   }
 }
