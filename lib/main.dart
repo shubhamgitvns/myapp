@@ -11,25 +11,27 @@ class VSJQuizApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+
         appBar: AppBar(
           backgroundColor: Colors.teal,
-          title: const Card(      // It is like a box shadow in css like 3D
+          title: const Card(
               child: Text(
-            "Quiz App",
-            style: TextStyle(     //Texting Style
-              fontSize: 40,
-              fontWeight: FontWeight.w100,
-              backgroundColor: Colors.teal,
-              color: Colors.white
-            ),
-          )),
-          centerTitle: true, //Text Move In Center On The Screen
+                "Quiz App",
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  backgroundColor: Colors.teal,
+                ),
+              )),
+          centerTitle: true,
         ),
-        //Move In The Body
-        backgroundColor: Colors.grey.shade800,
+
+
+
+        backgroundColor: Colors.grey.shade900,
         body: SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: VSJQuiz(),
           ),
         ),
@@ -38,19 +40,34 @@ class VSJQuizApp extends StatelessWidget {
   }
 }
 
+
+
+
+
+
+
 class VSJQuiz extends StatefulWidget {
   @override
   _VSJQuizState createState() => _VSJQuizState();
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
-  List scores=[];
+  List<Widget> scores=[
+    const Icon(
+        Icons.check,
+        color: Colors.green
+    )
+    ,const Icon(
+        Icons.close,
+        color: Colors.red
+    ),];
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
+      children: <Widget>[ //Using Widget It is automatic create icons according,
+        //your answer
         Expanded(
           flex: 5,
           child: Padding(
@@ -90,8 +107,7 @@ class _VSJQuizState extends State<VSJQuiz> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.red),
-
+             style: ElevatedButton.styleFrom(primary: Colors.red),
               child: const Text(
                 'False',
                 style: TextStyle(
@@ -107,17 +123,8 @@ class _VSJQuizState extends State<VSJQuiz> {
         ),
         Row
           (
-            children:const <Widget>
-            [
-              Icon(  // Right Icon
-                Icons.check,
-                color: Colors.green, //Icon Color
-              ),
-              Icon(
-                Icons.close, //Wrong Icon
-                color: Colors.red,//Icon Color
-              ),
-            ]
+          children:scores, //Scores Row
+
         ),
       ],
     );
