@@ -44,21 +44,21 @@ class VSJQuiz extends StatefulWidget {
 }
 
 class _VSJQuizState extends State<VSJQuiz> {
+  List scores=[];
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-
         Expanded(
-          flex: 5, //Column Flex
+          flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
                 'Question Will Come Here',
-                textAlign: TextAlign.start,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
@@ -72,6 +72,7 @@ class _VSJQuizState extends State<VSJQuiz> {
             padding: const EdgeInsets.all(15.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.green),
+
               child: const Text(
                 'True',
                 style: TextStyle(
@@ -87,9 +88,10 @@ class _VSJQuizState extends State<VSJQuiz> {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
+            padding: const EdgeInsets.all(15.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(primary: Colors.red),
+
               child: const Text(
                 'False',
                 style: TextStyle(
@@ -103,7 +105,20 @@ class _VSJQuizState extends State<VSJQuiz> {
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row
+          (
+            children:const <Widget>
+            [
+              Icon(  // Right Icon
+                Icons.check,
+                color: Colors.green, //Icon Color
+              ),
+              Icon(
+                Icons.close, //Wrong Icon
+                color: Colors.red,//Icon Color
+              ),
+            ]
+        ),
       ],
     );
   }
