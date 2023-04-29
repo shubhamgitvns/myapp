@@ -17,15 +17,15 @@ class VSJQuizApp extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.teal,
-              title: Card(
+              title: const Card(
                   child: Text(
-                "Quiz App",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
-                  backgroundColor: Colors.teal,
-                ),
-              )),
+                    "Quiz App",
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: Colors.teal,
+                    ),
+                  )),
               centerTitle: true,
             ),
             backgroundColor: Colors.grey.shade900,
@@ -52,20 +52,17 @@ class _VSJQuizState extends State<VSJQuiz> {
   int questionno = -1;
   int correctanswers = 0;
   bool isTestOver = false;
+
+  //Questions list
   List<Question> questions = [
-    new Question("C is a programming language? T/F", true),
-    new Question("C++ is not an object oriented language.. T/F", false),
-    new Question("Python has dictionary.. T/F", true),
-    new Question("Hukulganj is the capital of Japan T/F", false),
-    new Question("Shubham Is Cr In The Class",false)
-  ];
+
+    Question("What is the capital of India", "a")
+  ];//Question list Bracket
+
   Question? currentquestion;
   List<Widget> scores = [];
 
-  void setQuestion(bool b) {
-    //isTestOver=false;
-    //questionno=-1;
-    //scores.clear();
+  void setQuestion(String s ) {
 
     if (isTestOver) return;
 
@@ -77,30 +74,34 @@ class _VSJQuizState extends State<VSJQuiz> {
     }
 
     if (questionno >= questions.length - 1) {
-      addResult(b);
+      addResult(s);
       currentquestiontext = "Questions Over. Correct answers = $correctanswers";
       isTestOver = true;
       return;
     }
 
-    addResult(b);
+    addResult(s);
     questionno++;
     if (questionno <= questions.length - 1) {
       currentquestion = questions[questionno];
       currentquestiontext = currentquestion!.question;
     }
+
   }
 
-  void addResult(bool b) {
-    bool iscorrect = b == currentquestion!.correctAnswer;
+  void addResult(String s) {
+     bool iscorrect = s  == currentquestion!.correctAnswer;
+     //Ans is two type first is true and second is false than,
+     //it is a bool data type
     //scores.clear();
     if (iscorrect) {
       correctanswers++;
-      scores.add(Icon(Icons.check, color: Colors.green));
+      scores.add(const Icon(Icons.check, color: Colors.green)); // create icon
     } else {
-      scores.add(Icon(Icons.close, color: Colors.red));
+      scores.add(const Icon(Icons.close, color: Colors.red)); // create icon
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -108,15 +109,16 @@ class _VSJQuizState extends State<VSJQuiz> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
+
         Expanded(
-          flex: 5,
+         // flex: 2,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
                 currentquestiontext,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -124,16 +126,27 @@ class _VSJQuizState extends State<VSJQuiz> {
             ),
           ),
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: const [
+            Text( "A= Lukhnow",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color:Colors.blue),),
+            Text( "B=Delhi",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,color:Colors.blue),),
+
+
+          ],
+        ),
+
+        // Text("B=No"),
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: ElevatedButton(
+            child: ElevatedButton(               //Button no.1
                 style: ElevatedButton.styleFrom(
                   primary: Colors.green,
                   minimumSize: const Size.fromHeight(50),
                 ),
-                child: Text(
-                  'True',
+                child: const Text(
+                  'A',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
@@ -143,21 +156,22 @@ class _VSJQuizState extends State<VSJQuiz> {
                   print("Submitted True");
                   setState(() {
                     // addResult(true);
-                    setQuestion(true);
+                    setQuestion("a");
                   });
                 }),
           ),
         ),
+
         Expanded(
           child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: ElevatedButton(
+            padding: const EdgeInsets.all(15.0),
+            child: ElevatedButton( //Button no.2
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,
                 minimumSize: const Size.fromHeight(50),
               ),
-              child: Text(
-                'False',
+              child: const Text(
+                'B',
                 style: TextStyle(
                   fontSize: 20.0,
                   color: Colors.white,
@@ -167,7 +181,7 @@ class _VSJQuizState extends State<VSJQuiz> {
                 print("Submitted False");
                 setState(() {
                   // addResult(false);
-                  setQuestion(false);
+                  setQuestion("b");
                 });
               },
             ),
@@ -183,10 +197,6 @@ class _VSJQuizState extends State<VSJQuiz> {
 
 class Question {
   String question = "";
-  bool correctAnswer = false;
-
-  Question(String question, bool correctAnswer) {
-    this.question = question;
-    this.correctAnswer = correctAnswer;
-  }
+  String correctAnswer = "";
+  Question(this.question, this.correctAnswer);
 }
