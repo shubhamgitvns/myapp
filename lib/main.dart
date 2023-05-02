@@ -1,229 +1,130 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/question.dart';
 
-void main() {
-  runApp(VSJQuizApp());
-}
-// StatelessWidget Class........................
-class VSJQuizApp extends StatelessWidget {
+void main() => runApp(VSJApp());
+
+class VSJApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false, //Remove the banner
-      home: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Scaffold( // Scaffold means Structure related the app
-            appBar: AppBar( // Appbar
-              backgroundColor: Colors.teal,
-              title: const Card(
-                  child: Text(
-                    "My Quiz App", //Appbar tital
-
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      backgroundColor: Colors.teal,
-                    ),
-                  )),
-              centerTitle: true, // Move the Center in row the text
-            ),
-            backgroundColor: Colors.grey.shade900,
-            //Enter the Body part.............................
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: VSJQuiz(),
-              ),
-            ),
-          ),
-        ),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.teal,
       ),
+      home: VSJHomePage(),
     );
   }
 }
-//StatefulWidget Class.............................
-class VSJQuiz extends StatefulWidget {
+
+class VSJHomePage extends StatefulWidget {
+  VSJHomePage({Key? key}) : super(key: key);
+
   @override
-  _VSJQuizState createState() => _VSJQuizState();
+  VSJPageState createState() => VSJPageState();
 }
 
-class _VSJQuizState extends State<VSJQuiz> {
-  String currentquestiontext = "Press any button to start the quiz";
-  int questionno = -1; //if the start the question than the question no. increase -1 to 0
-  int correctanswers = 0; // Starting correct answer score 0
-  bool isTestOver = false;
-  List<Question> questions = QuestionArray.questions;
-  Question? currentquestion;
-  List<Widget> scores = [];
-
-
-
-  void setQuestion(String s) {
-    //isTestOver=false;
-    //questionno=-1;
-    //scores.clear();
-
-    if (isTestOver) return;
-
-    if (questionno == -1) {
-      questionno++;
-      currentquestion = questions[questionno];
-      currentquestiontext = currentquestion!.question;
-      return;
-    }
-
-    if (questionno >= questions.length - 1) {
-      addResult(s);
-      currentquestiontext = "Questions Over. Correct answers = $correctanswers";
-      isTestOver = true;
-      return;
-    }
-
-    addResult(s);
+class VSJPageState extends State<VSJHomePage> {
+  int questionno = -1; // Initialize Questionno
+  String buttonlabel = "Submit"; // Initialize button Text
+  //String Option="";
+  List<Question> questions = [ //Question list
+    Question("What is the capital of India", "Lucknow", "Delhi", "Hukulgunj",
+        "Pandaypur"),
+    Question("Whear is situated The Sundarpur", "Hukulgunj", "Bhojubir",
+        "Lunka", "Jaytpura"),
+    Question("What is the full form of Cr", "Criminal recerch",
+        "Class Representative", "Champak Roy", "Shubham"),
+  ];
+  String questiontext = "Start the Quiz";
+  Question currentquestion = Question("", "", "", "", "");
+  void nextquestion() { //Class method
     questionno++;
-    if (questionno <= questions.length - 1) {
-      currentquestion = questions[questionno];
-      currentquestiontext = currentquestion!.question;
+    print(questionno);
+    if (questionno >= questions.length) {
+      questiontext = "Test over"; // Here Question-text value change
+      // Show the current question option null
+      currentquestion.opta="";
+      currentquestion.optb="";
+      currentquestion.optc="";
+      currentquestion.optd="";
+      buttonlabel = "Restart"; // Here button-level value change
+      questionno=-1; // Restart program
+      return;
     }
-  }
+    currentquestion = questions[questionno];
+    questiontext = currentquestion.question;
 
-  void addResult(String s) {
-    bool iscorrect = s == currentquestion!.correctAnswer;
-    //scores.clear();
-    if (iscorrect) {
-      correctanswers++;
-      scores.add(const Icon(Icons.check, color: Colors.green));
-    } else {
-      scores.add(const Icon(Icons.close, color: Colors.red));
-    }
-  }
-
-  String _selectedOption = "";
-  void _handleOptionChange(String? value) {
-    setState(() {
-      _selectedOption = value!;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Expanded(
-          flex: 3,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Center(
-              child: Text(
-                currentquestiontext,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 25.0,
-                  color: Colors.white,
-                ),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Quiz"),
+        centerTitle: true,
+      ),
+      body: Column(
+        // Column mens parent
+        // mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(// Column ka child
+              children: [
+            Expanded(
+              child: Center(child: Text(questiontext)),
             ),
+          ]),
+          Row(
+            children:  [
+              Expanded(
+                child:
+                Center(
+                  child: Text(currentquestion.opta),
+                ),
+              )
+            ],
           ),
-        ),
-        Expanded(
-          flex: 5,
-          child: Center(
-            child: GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 3.0,
-              padding: const EdgeInsets.all(10.0),
-              children: <Widget>[
-                RadioListTile(
-                  title: const Text('Lucknow',
-                      style: const TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                      )),
-                  value: 'option 1',
-                  groupValue: _selectedOption,
-                  onChanged: _handleOptionChange,
-                ),
-                RadioListTile(
-                  title: const Text('Delhi',
-                      style: const TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                      )),
-                  value: 'Option 2',
-                  groupValue: _selectedOption,
-                  onChanged: _handleOptionChange,
-                ),
-                RadioListTile(
-                  title: const Text('Merethe',
-                      style: const TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                      )),
-                  value: 'Option 3',
-                  groupValue: _selectedOption,
-                  onChanged: _handleOptionChange,
-                ),
-                RadioListTile(
-                  title: const Text('Goa',
-                      style: const TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white,
-                      )),
-                  value: 'Option 4',
-                  groupValue: _selectedOption,
-                  onChanged: _handleOptionChange,
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Expanded(
+                  child: Center(
+                child: Text(currentquestion.optb),
+              ))
+            ],
           ),
-        ),
-        Expanded(
-          flex: 2,
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green,
-                  minimumSize: const Size.fromHeight(50),
-                ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                  ),
-                ),
-                onPressed: () {
-                  print("Submitted True");
-                  setState(() {
-                    // addResult(true);
-                    setQuestion("Lucknow");
-                  });
-                }),
+          Row(
+            children: [
+              Expanded(
+                  child: Center(
+                child: Text(currentquestion.optc),
+              ))
+            ],
           ),
-        ),
-        Row(
-          children: scores,
-        ),
-      ],
+          Row(
+            children: [
+              Expanded(
+                  child: Center(
+                child: Text(currentquestion.optd),
+              ))
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: ElevatedButton(
+                          onPressed: () {                //OnPressed fun()
+                            nextquestion();
+                            setState(() {});
+                            print(questionno);
+                          },
+                          child: Center(
+                            child: Text(buttonlabel),
+                          ))))
+            ],
+          ),
+        ],
+      ),
     );
   }
-}
-
-class QuestionArray {
-  static List<Question> questions = [
-    Question("What is the Capital of India", "Lucknow"),
-    // Question("C++ is not an object oriented language.. T/F", false),
-    // Question("Python has dictionary.. T/F", true),
-    // Question("Hukulganj is the capital of Japan T/F", false)
-  ];
-}
-
-class Question {
-  String question = "";
-  String correctAnswer = "";
-
-  Question(this.question, this.correctAnswer);
 }
