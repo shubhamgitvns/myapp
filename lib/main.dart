@@ -1,47 +1,88 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/question.dart';
 
-void main() => runApp(VSJApp());
+void main() {
+  runApp(VSJQuizApp());
+}
 
-class VSJApp extends StatelessWidget {
+class VSJQuizApp extends StatelessWidget {   //StatelessWidget body
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
+      home: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Scaffold(
+            appBar: AppBar(          //App bar body
+              backgroundColor: Colors.teal,
+              title: const Card(
+                  child: Text(
+                    "Quiz App",
+                    style: TextStyle(
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                      backgroundColor: Colors.teal,
+                    ),
+                  )),
+              centerTitle: true,
+            ),
+            backgroundColor: Colors.grey.shade900,
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: VSJQuiz(),
+              ),
+            ),
+          ),
+        ),
       ),
-      home: VSJHomePage(),
     );
   }
 }
 
-class VSJHomePage extends StatefulWidget {
-  VSJHomePage({Key? key}) : super(key: key);
-
+class VSJQuiz extends StatefulWidget {
   @override
-  VSJPageState createState() => VSJPageState();
+  _VSJQuizState createState() => _VSJQuizState();
 }
 
-class VSJPageState extends State<VSJHomePage> {
-  int questionno = -1; // Initialize Questionno
-  String buttonlabel = "Submit"; // Initialize button Text
-  //String Option="";
+class _VSJQuizState extends State<VSJQuiz> {
+  int questionno = -1;
+  int correctAnswers = 0;
+  String buttonlabel = "Submit";
+  //String currentquestiontext = "Press any button to start the quiz";
+  List<Widget> scores = [];
+
   List<Question> questions = [ //Question list
     Question("What is the capital of India", "Lucknow", "Delhi", "Hukulgunj",
-        "Pandaypur"),
+        "Pandaypur",2),
     Question("Whear is situated The Sundarpur", "Hukulgunj", "Bhojubir",
-        "Lunka", "Jaytpura"),
+        "Lunka", "Jaytpura", 3),
     Question("What is the full form of Cr", "Criminal recerch",
-        "Class Representative", "Champak Roy", "Shubham"),
+        "Class Representative", "Champak Roy", "Shubham",3),
   ];
   String questiontext = "Start the Quiz";
-  Question currentquestion = Question("", "", "", "", "");
+  Question currentquestion = Question("", "", "", "", "",0);
+
+
+  void addResult(bool b) {
+    bool iscorrect = b == currentquestion.correctAnswer;
+    //scores.clear();
+    if (iscorrect) {
+      correctAnswers++;
+      scores.add( Icon(Icons.check, color: Colors.green));
+    } else {
+      scores.add(Icon(Icons.close, color: Colors.red));
+    }
+  }
+
+
   void nextquestion() { //Class method
     questionno++;
     print(questionno);
+
     if (questionno >= questions.length) {
-      questiontext = "Test over"; // Here Question-text value change
+      questiontext = "Test over .correctCorrect answers = $correctAnswers"; // Here Question-text value change
       // Show the current question option null
       currentquestion.opta="";
       currentquestion.optb="";
@@ -53,78 +94,119 @@ class VSJPageState extends State<VSJHomePage> {
     }
     currentquestion = questions[questionno];
     questiontext = currentquestion.question;
-
   }
+
+
+  int _selectedOption = 0;
+  void _handleOptionChange(int ? value) {
+    setState(() {
+      _selectedOption =value! ;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Quiz"),
-        centerTitle: true,
-      ),
-      body: Column(
-        // Column mens parent
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(// Column ka child
-              children: [
-            Expanded(
-              child: Center(child: Text(questiontext)),
-            ),
-          ]),
-          Row(
-            children:  [
-              Expanded(
-                child:
-                Center(
-                  child: Text(currentquestion.opta),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Expanded(
+          flex: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                questiontext,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
                 ),
-              )
-            ],
+              ),
+            ),
           ),
-          Row(
-            children: [
-              Expanded(
-                  child: Center(
-                child: Text(currentquestion.optb),
-              ))
-            ],
+        ),
+        Expanded(
+          flex: 5,
+          child: Center(
+            child: GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: 3.0,
+              padding: const EdgeInsets.all(10.0),
+              children: <Widget>[
+                RadioListTile(
+                  title:  Text(currentquestion.opta,
+                      style: const TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      )),
+                  value: 1,
+                  groupValue: _selectedOption,
+                  onChanged: _handleOptionChange,
+                ),
+                RadioListTile(
+                  title:  Text(currentquestion.optb,
+                      style: const TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      )),
+                  value: 2,
+                  groupValue: _selectedOption,
+                  onChanged: _handleOptionChange,
+                ),
+                RadioListTile(
+                  title:  Text(currentquestion.optc,
+                      style: const TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      )),
+                  value: 3,
+                  groupValue: _selectedOption,
+                  onChanged: _handleOptionChange,
+                ),
+                RadioListTile(
+                  title:  Text(currentquestion.optd,
+                      style: const TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.white,
+                      )),
+                  value: 4,
+                  groupValue: _selectedOption,
+                  onChanged: _handleOptionChange,
+                ),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              Expanded(
-                  child: Center(
-                child: Text(currentquestion.optc),
-              ))
-            ],
+        ),
+        Expanded(
+          flex: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green,
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child:  Text(
+                  buttonlabel,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                  ),
+                ),
+                onPressed: () {       //onPressed
+                  nextquestion();
+                  _selectedOption = 0;
+                  setState(() {});
+                  print(questionno);
+                }),
           ),
-          Row(
-            children: [
-              Expanded(
-                  child: Center(
-                child: Text(currentquestion.optd),
-              ))
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: ElevatedButton(
-                          onPressed: () {                //OnPressed fun()
-                            nextquestion();
-                            setState(() {});
-                            print(questionno);
-                          },
-                          child: Center(
-                            child: Text(buttonlabel),
-                          ))))
-            ],
-          ),
-        ],
-      ),
+        ),
+        Row(
+          children: scores,
+        ),
+      ],
     );
   }
 }
