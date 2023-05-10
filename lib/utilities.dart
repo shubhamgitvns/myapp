@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class Utilities {
-  static Future f(String link) async {
+  static Future downloadQuestions(String link) async {
     final url = Uri.https("gist.githubusercontent.com", link, {});
 
     try {

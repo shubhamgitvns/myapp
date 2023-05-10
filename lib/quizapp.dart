@@ -32,7 +32,7 @@ class _QuizAppState extends State<QuizApp> {
   }
 
   void addResult(_selectedOption) {
-    int correcctanswerint = int.parse(correctanswer);
+    int correcctanswerint = int.parse(correctanswer);  // convert string to integer
     bool isanswercorrect = _selectedOption == correcctanswerint;
     //scores.clear();
     if (isanswercorrect) {
@@ -124,7 +124,8 @@ class _QuizAppState extends State<QuizApp> {
             onPressed: () async {
               print("counter$counter");
               if (counter == -1) {
-                data = await Utilities.f(link);
+ //*********************************if question start than question is downloaded**********************
+                data = await Utilities.downloadQuestions(link);
                 data = data["questions"];
                 n = data.length;
 
