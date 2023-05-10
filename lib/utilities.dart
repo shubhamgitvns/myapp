@@ -7,9 +7,9 @@ class Utilities {
 
     try {
       final response = await http.get(url);
-      print("Response $response");
-      print("Status ${response.statusCode}");
-      print("Body ${response.body}");
+      // print("Response $response");
+      // print("Status ${response.statusCode}");
+      // print("Body ${response.body}");
       final jsonResponse = convert.jsonDecode(response.body);
       //print(jsonResponse);
       return jsonResponse;

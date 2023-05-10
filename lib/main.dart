@@ -30,10 +30,13 @@ class MyStful extends StatefulWidget {
 
 class _MyStfulState extends State<MyStful> {
   String link =
-      "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/1a7bcf56243ba1d281301f13936c9c585273f7e5/array.json";
-
-  int counter = -1;
-  int _selectedOption=0;
+      "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/5183d413177a29ff923e0d79bcd3fdad3b8411d0/array.json";
+ dynamic data;
+  int counter = -1,n=-1;
+  int _selectedOption = 0;
+  int point = 0;
+  String b = "_selectedOption";
+  String correctanswer = "";
   String message = "Clicked";
   String length = "length";
   String question = "Press the button to start the Quiz";
@@ -42,28 +45,41 @@ class _MyStfulState extends State<MyStful> {
   String opt3 = "";
   String opt4 = "";
   int i = 0;
+  List<Widget> scores = [];
   void _handleOptionChange(int? value) {
     setState(() {
       _selectedOption = value!;
     });
+  }
 
-
+  void addResult(_selectedOption)
+  {
+  int correcctanswerint=int.parse(correctanswer);
+    bool isanswercorrect = _selectedOption == correcctanswerint;
+    //scores.clear();
+    if (isanswercorrect) {
+      point++;
+      scores.add(Icon(Icons.check, color: Colors.green));
+    } else {
+      scores.add(Icon(Icons.close, color: Colors.red));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
           Expanded(
             flex: 3,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Center(
-                child: Text(question,
-                  style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                child: Text(
+                  question,
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ),
@@ -76,17 +92,19 @@ class _MyStfulState extends State<MyStful> {
                 padding: const EdgeInsets.all(10.0),
                 children: <Widget>[
                   RadioListTile(
-                    title:  Text(opt1,
-                        style: const TextStyle(
-                          fontSize: 25.0,
-                          color: Colors.black,
-                        )),
+                    title: Text(
+                      opt1,
+                      style: const TextStyle(
+                        fontSize: 25.0,
+                        color: Colors.black,
+                      ),
+                    ),
                     value: 1,
                     groupValue: _selectedOption,
                     onChanged: _handleOptionChange,
                   ),
                   RadioListTile(
-                    title:  Text(opt2,
+                    title: Text(opt2,
                         style: const TextStyle(
                           fontSize: 25.0,
                           color: Colors.black,
@@ -96,7 +114,7 @@ class _MyStfulState extends State<MyStful> {
                     onChanged: _handleOptionChange,
                   ),
                   RadioListTile(
-                    title:  Text(opt3,
+                    title: Text(opt3,
                         style: const TextStyle(
                           fontSize: 25.0,
                           color: Colors.black,
@@ -106,7 +124,7 @@ class _MyStfulState extends State<MyStful> {
                     onChanged: _handleOptionChange,
                   ),
                   RadioListTile(
-                    title:  Text(opt4,
+                    title: Text(opt4,
                         style: const TextStyle(
                           fontSize: 25.0,
                           color: Colors.black,
@@ -120,37 +138,57 @@ class _MyStfulState extends State<MyStful> {
             ),
           ),
 
-
-          
           //**************Pressed the button****************************************
-        ElevatedButton(
-            child: Text("Clicked $counter times."),
-            onPressed: () async {
-              counter++;
-              dynamic data = await Utilities.f(link);
-              data = data["questions"];
-              print(data);
-              print(data.runtimeType);
-             int n = data.length;
-              length = "N=$n";
-              if(counter>=n)
-                {
+          ElevatedButton(
+              child: Text("click me $counter"),
+              onPressed: () async {
+                print("counter$counter");
+                if (counter == -1) {
+                  data = await Utilities.f(link);
+                  data = data["questions"];
+                  n=data.length;
+                  
+                  counter++;
+                  question = data[counter % n]["question"];
+                  opt1 = data[counter % n]["opta"];
+                  opt2 = data[counter % n]["optb"];
+                  opt3 = data[counter % n]["optc"];
+                  opt4 = data[counter % n]["optd"];
+                  correctanswer = data[counter % n]["correctanswer"];
+                  setState(() {});
                   return;
                 }
-              question = data[counter % n]["question"];
-              opt1 = data[counter % n]["opt1"];
-              opt2 = data[counter % n]["opt2"];
-              opt3 = data[counter % n]["opt3"];
-              opt4 = data[counter % n]["opt4"];
 
-              for (i; i <= n - 1; i++) {
-                print(data[i]);
-              }
+                addResult(_selectedOption);
+                counter++;
+                question = data[counter % n]["question"];
+                correctanswer = data[counter % n]["correctanswer"];
 
-              setState(() {});
-            }),
+                if (counter > n-1) {
+                  setState(() {});
+                 // addResult(_selectedOption);
+                  print("Test over");
+                  question = "Test over correct answer=$point";
+                  opt1 = "";
+                  opt2 = "";
+                  opt3 = "";
+                  opt4 = "";
+                  message = "Restart";
+                  return;
+                }
 
-      ]
-    );
+                question = data[counter % n]["question"];
+                opt1 = data[counter % n]["opta"];
+                opt2 = data[counter % n]["optb"];
+                opt3 = data[counter % n]["optc"];
+                opt4 = data[counter % n]["optd"];
+                correctanswer = data[counter % n]["correctanswer"];
+
+                setState(() {});
+              }),
+          Row(
+            children: scores,
+          )
+        ]);
   }
 }
