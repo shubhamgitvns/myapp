@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/question.dart';
 import 'package:myapp/utilities.dart';
-
-
-
 
 class QuizApp extends StatefulWidget {
   const QuizApp({Key? key}) : super(key: key);
@@ -11,8 +9,9 @@ class QuizApp extends StatefulWidget {
   State<QuizApp> createState() => _QuizAppState();
 }
 
-
 class _QuizAppState extends State<QuizApp> {
+  List<Question> questions = [];
+  Question? currentquestion; // create the question variable
   String link =
       "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/5183d413177a29ff923e0d79bcd3fdad3b8411d0/array.json";
   dynamic data;
@@ -37,7 +36,8 @@ class _QuizAppState extends State<QuizApp> {
   }
 
   void addResult(_selectedOption) {
-    int correcctanswerint = int.parse(correctanswer);  // convert string to integer
+    int correcctanswerint =
+        int.parse(correctanswer); // convert string to integer
     bool isanswercorrect = _selectedOption == correcctanswerint;
     //scores.clear();
     if (isanswercorrect) {
@@ -129,26 +129,40 @@ class _QuizAppState extends State<QuizApp> {
             onPressed: () async {
               print("counter$counter");
               if (counter == -1) {
- //*********************************if question start than question is downloaded**********************
+
+                //*******if question start than question is downloaded**********************
+
                 data = await Utilities.downloadQuestions(link);
                 data = data["questions"];
-                n = data.length;
 
+                //create the question array length
+                n = data.length;
+                for (int i = 0; i <= n - 1; i++) {
+                  question = data[i]["question"];
+                  opt1 = data[i]["opta"];
+                  opt2 = data[i]["optb"];
+                  opt3 = data[i]["optc"];
+                  opt4 = data[i]["optd"];
+                  correctanswer = data[i]["correctanswer"];
+                  questions.add(Question(
+                      question, opt1, opt2, opt3, opt4, correctanswer));
+                }
+                print(questions);
                 counter++;
-                question = data[counter % n]["question"];
-                opt1 = data[counter % n]["opta"];
-                opt2 = data[counter % n]["optb"];
-                opt3 = data[counter % n]["optc"];
-                opt4 = data[counter % n]["optd"];
-                correctanswer = data[counter % n]["correctanswer"];
+                currentquestion = questions[counter];
+                opt1 = currentquestion!.opta;
+                opt2 = currentquestion!.optb;
+                opt3 = currentquestion!.optc;
+                opt4 = currentquestion!.optd;
+                correctanswer = currentquestion!.correctanswer;
                 setState(() {});
                 return;
               }
 
               addResult(_selectedOption);
               counter++;
-              question = data[counter % n]["question"];
-              correctanswer = data[counter % n]["correctanswer"];
+              question =currentquestion!.question[counter];
+              correctanswer = currentquestion!.correctanswer;
 
               if (counter > n - 1) {
                 setState(() {});
@@ -163,12 +177,12 @@ class _QuizAppState extends State<QuizApp> {
                 return;
               }
 
-              question = data[counter % n]["question"];
-              opt1 = data[counter % n]["opta"];
-              opt2 = data[counter % n]["optb"];
-              opt3 = data[counter % n]["optc"];
-              opt4 = data[counter % n]["optd"];
-              correctanswer = data[counter % n]["correctanswer"];
+              question = currentquestion!.question[counter];
+              opt1 = currentquestion!.opta;
+              opt2 = currentquestion!.optb;
+              opt3 = currentquestion!.optc;
+              opt4 = currentquestion!.optc;
+              correctanswer = currentquestion!.correctanswer;
 
               setState(() {});
             }),
@@ -182,9 +196,7 @@ class _QuizAppState extends State<QuizApp> {
 
 
 
-
-
-
+//***************** Second quiz **************************************
 
 class QuizThree extends StatefulWidget {
   const QuizThree({Key? key}) : super(key: key);
@@ -194,6 +206,8 @@ class QuizThree extends StatefulWidget {
 }
 
 class _QuizThreeState extends State<QuizThree> {
+  List<Question> questions = [];
+  Question? currentquestion; // create the question variable
   String link =
       "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/5183d413177a29ff923e0d79bcd3fdad3b8411d0/array.json";
   dynamic data;
@@ -218,7 +232,8 @@ class _QuizThreeState extends State<QuizThree> {
   }
 
   void addResult(_selectedOption) {
-    int correcctanswerint = int.parse(correctanswer);  // convert string to integer
+    int correcctanswerint =
+    int.parse(correctanswer); // convert string to integer
     bool isanswercorrect = _selectedOption == correcctanswerint;
     //scores.clear();
     if (isanswercorrect) {
@@ -310,26 +325,40 @@ class _QuizThreeState extends State<QuizThree> {
             onPressed: () async {
               print("counter$counter");
               if (counter == -1) {
-                //*********************************if question start than question is downloaded**********************
+
+                //*******if question start than question is downloaded**********************
+
                 data = await Utilities.downloadQuestions(link);
                 data = data["questions"];
-                n = data.length;
 
+                //create the question array length
+                n = data.length;
+                for (int i = 0; i <= n - 1; i++) {
+                  question = data[i]["question"];
+                  opt1 = data[i]["opta"];
+                  opt2 = data[i]["optb"];
+                  opt3 = data[i]["optc"];
+                  opt4 = data[i]["optd"];
+                  correctanswer = data[i]["correctanswer"];
+                  questions.add(Question(
+                      question, opt1, opt2, opt3, opt4, correctanswer));
+                }
+                print(questions);
                 counter++;
-                question = data[counter % n]["question"];
-                opt1 = data[counter % n]["opta"];
-                opt2 = data[counter % n]["optb"];
-                opt3 = data[counter % n]["optc"];
-                opt4 = data[counter % n]["optd"];
-                correctanswer = data[counter % n]["correctanswer"];
+                currentquestion = questions[counter];
+                opt1 = currentquestion!.opta;
+                opt2 = currentquestion!.optb;
+                opt3 = currentquestion!.optc;
+                opt4 = currentquestion!.optd;
+                correctanswer = currentquestion!.correctanswer;
                 setState(() {});
                 return;
               }
 
               addResult(_selectedOption);
               counter++;
-              question = data[counter % n]["question"];
-              correctanswer = data[counter % n]["correctanswer"];
+              question =currentquestion!.question[counter];
+              correctanswer = currentquestion!.correctanswer;
 
               if (counter > n - 1) {
                 setState(() {});
@@ -344,12 +373,12 @@ class _QuizThreeState extends State<QuizThree> {
                 return;
               }
 
-              question = data[counter % n]["question"];
-              opt1 = data[counter % n]["opta"];
-              opt2 = data[counter % n]["optb"];
-              opt3 = data[counter % n]["optc"];
-              opt4 = data[counter % n]["optd"];
-              correctanswer = data[counter % n]["correctanswer"];
+              question = currentquestion!.question[counter];
+              opt1 = currentquestion!.opta;
+              opt2 = currentquestion!.optb;
+              opt3 = currentquestion!.optc;
+              opt4 = currentquestion!.optc;
+              correctanswer = currentquestion!.correctanswer;
 
               setState(() {});
             }),
@@ -360,8 +389,3 @@ class _QuizThreeState extends State<QuizThree> {
     );
   }
 }
-
-
-
-
-
