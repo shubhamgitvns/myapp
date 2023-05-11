@@ -13,7 +13,7 @@ class _QuizAppState extends State<QuizApp> {
   List<Question> questions = [];
   Question? currentquestion; // create the question variable
   String link =
-      "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/5183d413177a29ff923e0d79bcd3fdad3b8411d0/array.json";
+      "shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/6097508e7368d3930e23fe33001c576e4176de8a/array.json";
   dynamic data;
   int counter = -1, n = -1;
   int _selectedOption = 0;
@@ -137,7 +137,7 @@ class _QuizAppState extends State<QuizApp> {
 
                 //create the question array length
                 n = data.length;
-                for (int i = 0; i <= n - 1; i++) {
+                for (int i = 0; i <= n-1; i++) {
                   question = data[i]["question"];
                   opt1 = data[i]["opta"];
                   opt2 = data[i]["optb"];
@@ -147,9 +147,11 @@ class _QuizAppState extends State<QuizApp> {
                   questions.add(Question(
                       question, opt1, opt2, opt3, opt4, correctanswer));
                 }
+                questions.add(Question("", "", "", "", "", ""));
                 print(questions);
                 counter++;
                 currentquestion = questions[counter];
+                question=currentquestion!.question;
                 opt1 = currentquestion!.opta;
                 opt2 = currentquestion!.optb;
                 opt3 = currentquestion!.optc;
@@ -158,13 +160,13 @@ class _QuizAppState extends State<QuizApp> {
                 setState(() {});
                 return;
               }
-
               addResult(_selectedOption);
               counter++;
-              question =currentquestion!.question[counter];
+              currentquestion = questions[counter];
+              question =currentquestion!.question;
               correctanswer = currentquestion!.correctanswer;
 
-              if (counter > n - 1) {
+              if (counter >= n) {
                 setState(() {});
                 // addResult(_selectedOption);
                 print("Test over");
@@ -177,7 +179,8 @@ class _QuizAppState extends State<QuizApp> {
                 return;
               }
 
-              question = currentquestion!.question[counter];
+              currentquestion = questions[counter];
+              question=currentquestion!.question;
               opt1 = currentquestion!.opta;
               opt2 = currentquestion!.optb;
               opt3 = currentquestion!.optc;
@@ -198,18 +201,20 @@ class _QuizAppState extends State<QuizApp> {
 
 //***************** Second quiz **************************************
 
-class QuizThree extends StatefulWidget {
-  const QuizThree({Key? key}) : super(key: key);
+
+class CQuizApp extends StatefulWidget {
+  const CQuizApp({Key? key}) : super(key: key);
 
   @override
-  State<QuizThree> createState() => _QuizThreeState();
+  State<CQuizApp> createState() => _CQuizAppState();
 }
 
-class _QuizThreeState extends State<QuizThree> {
+
+class _CQuizAppState extends State<CQuizApp> {
   List<Question> questions = [];
   Question? currentquestion; // create the question variable
   String link =
-      "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/5183d413177a29ff923e0d79bcd3fdad3b8411d0/array.json";
+      "/shubhamgitvns/89d337387aaf2d1f2f134a51fd327078/raw/ed7169b258f5e4cdb1d94d4a6628bf47d03d8bb7/c.json";
   dynamic data;
   int counter = -1, n = -1;
   int _selectedOption = 0;
@@ -343,6 +348,7 @@ class _QuizThreeState extends State<QuizThree> {
                   questions.add(Question(
                       question, opt1, opt2, opt3, opt4, correctanswer));
                 }
+                questions.add(Question(question, "", "", "", "", ""));
                 print(questions);
                 counter++;
                 currentquestion = questions[counter];
@@ -357,10 +363,10 @@ class _QuizThreeState extends State<QuizThree> {
 
               addResult(_selectedOption);
               counter++;
-              question =currentquestion!.question[counter];
+              currentquestion = questions[counter];
               correctanswer = currentquestion!.correctanswer;
 
-              if (counter > n - 1) {
+              if (counter >= n ) {
                 setState(() {});
                 // addResult(_selectedOption);
                 print("Test over");
@@ -373,7 +379,7 @@ class _QuizThreeState extends State<QuizThree> {
                 return;
               }
 
-              question = currentquestion!.question[counter];
+              currentquestion = questions[counter];
               opt1 = currentquestion!.opta;
               opt2 = currentquestion!.optb;
               opt3 = currentquestion!.optc;

@@ -8,10 +8,11 @@ class QuizOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal,
+      backgroundColor: Colors.black,
       appBar: AppBar( //App bar one *******************************************
         centerTitle: true,
-        title: const Text('First Page'),
+        backgroundColor: Colors.teal,
+        title: const Text('Main Page'),
       ),
       body: Column(
         children: [
@@ -28,7 +29,7 @@ class QuizOne extends StatelessWidget {
           Center(
             child: Card(
               child: ElevatedButton(
-                  child: const Text('Quiz 1'),
+                  child: const Text('Python Quiz'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/second');
                   }),
@@ -37,7 +38,7 @@ class QuizOne extends StatelessWidget {
           Center(
             child: Card(
               child: ElevatedButton(
-                  child: const Text('Quiz 2'),
+                  child: const Text('C.Quiz'),
                   onPressed: () {
                     Navigator.pushNamed(context, '/Third');
                   }),
@@ -50,7 +51,7 @@ class QuizOne extends StatelessWidget {
   }
 }
 
-
+//*************python Quiz Appp*****************************
 
 class MyApp extends StatelessWidget {
 
@@ -62,9 +63,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
           appBar: AppBar(
-            title: Text("Quiz app"),
+            title: Text("Python Quiz"),
             centerTitle: true,
-            backgroundColor: Colors.teal,
+            backgroundColor: Colors.amber,
           ),
         body: const QuizApp(),
       ),
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
 }
 
 
-
+//*******************C Quiz App**********************************
 
 class QuizThree extends StatelessWidget {
 
@@ -85,11 +86,11 @@ class QuizThree extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Quiz app"),
+          title: Text("C.Quiz"),
           centerTitle: true,
-          backgroundColor: Colors.teal,
+          backgroundColor: Colors.green,
         ),
-        body: QuizApp(),
+        body:const CQuizApp(),
       ),
     ));
   }
