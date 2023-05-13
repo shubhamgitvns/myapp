@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/quizapp.dart';
 
-
-
-
 class QuizOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -51,10 +48,10 @@ class QuizOne extends StatelessWidget {
   }
 }
 
+
 //*************python Quiz Appp*****************************
 
 class MyApp extends StatelessWidget {
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,12 +92,3 @@ class QuizThree extends StatelessWidget {
     ));
   }
 }
-
-
-
-
-
-
-
-
-

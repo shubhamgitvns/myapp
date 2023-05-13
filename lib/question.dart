@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Question{
-  String question="";
-  String opta="";
-  String optb="";
-  String optc="";
-  String optd="";
-  String correctanswer="";
+  String bank="";
+  String accountno="";
+  String holder="";
+  String amount="";
+
 
   //*****Create the constructor******
-  Question(this.question,this.opta,this.optb,this.optc,this.optd,this.correctanswer);
+  Question(this.bank,this.accountno,this.holder,this.amount);
+
 
   @override
   String toString() {
-    return 'Question{question: $question, opta: $opta, optb: $optb, optc: $optc, optd: $optd, correctanswer: $correctanswer}';
+    return 'Question{question: $bank,account.no:$accountno,holder:$holder,amount:$amount}';
   }
 }
