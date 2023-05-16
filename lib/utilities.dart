@@ -7,7 +7,6 @@ class Utilities {
 
     try {
       //http.get that work is download the data from internet or fetch the data from internet
-
       final response = await http.get(url);
       print("Response $response");
       //response.statusCode is response data is success fully downloaded this code is 200
