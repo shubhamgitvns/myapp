@@ -1,25 +1,40 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:myapp/product.dart';
+import 'package:myapp/productpage.dart';
+
+import 'downloader.dart';
 
 class Utilities {
-  static Future downloadquestion(String link) async {
-    final url = Uri.https("gist.githubusercontent.com", link, {});
+  static List<Widget> getWidgets(BuildContext context) {
+    List<Widget> widgets = [];
+    int n = products.length;
+    print(n);
 
-    try {
-      //http.get that work is download the data from internet or fetch the data from internet
-      final response = await http.get(url);
-      print("Response $response");
-      //response.statusCode is response data is success fully downloaded this code is 200
-      print("Status ${response.statusCode}");
-      //response.body is data those write in json body
-      print("Body ${response.body}");
-      // convert string data in json.
-      final jsonResponse = convert.jsonDecode(response.body);
-      //print(jsonResponse);
-      return jsonResponse;
-    } catch (e) {
-      print(e);
-      return false;
+    for (int i = 0; i <= n - 1; i++) {
+      widgets.add(
+          Row(children: [Text("productno:- ${products[i]["productno"]}")]));
+      widgets.add(Row(children: [
+        Text("name:- ${products[i]["name"]}"),
+        Center(
+          child: Card(
+            child: ElevatedButton(
+                child: const Text('more'),
+                onPressed: () {
+
+                  print("hii");
+                  Navigator.pushNamed(context, '/second');
+                  print("pushed");
+                }),
+          ),
+        ),
+      ]));
+      // widgets.add(Row(children: [Text("site:- ${products[i]["site"]}")]));
+      // widgets.add(Row(children: [Text("site:- ${products[i]["link"]}")]));
+
     }
+    return widgets;
   }
+
+  static dynamic products = "";
 }
