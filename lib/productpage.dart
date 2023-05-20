@@ -26,7 +26,7 @@ class DeatilPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Produc Deatil Page"),
+        title: Text("Product Deatil Page"),
       ),
       body: ProductDeatil(),
 

@@ -6,35 +6,44 @@ import 'package:myapp/productpage.dart';
 import 'downloader.dart';
 
 class Utilities {
+  static dynamic productdetail = "";
   static List<Widget> getWidgets(BuildContext context) {
     List<Widget> widgets = [];
     int n = products.length;
     print(n);
 
     for (int i = 0; i <= n - 1; i++) {
-      widgets.add(
-          Row(children: [Text("productno:- ${products[i]["productno"]}")]));
+      var site = products[i]["site"];
+      var link = products[i]["link"];
+
+      widgets.add(Row(children: [Text("productno:- ${products[i]["productno"]}")]));
       widgets.add(Row(children: [
         Text("name:- ${products[i]["name"]}"),
         Center(
           child: Card(
             child: ElevatedButton(
                 child: const Text('more'),
-                onPressed: () {
-
-                  print("hii");
-                  Navigator.pushNamed(context, '/second');
-                  print("pushed");
+                onPressed: () async { //***********OnPressed method***************************
+                  print("Site $site");
+                  print("link $link");
+   //*************Download the product just click the button on console************************
+                  Utilities.productdetail =
+                      await Downloader.download(site, link);
+                  print(Utilities.productdetail);
+                 //This is second page path
+                   Navigator.pushNamed(context, '/second');
                 }),
           ),
         ),
       ]));
-      // widgets.add(Row(children: [Text("site:- ${products[i]["site"]}")]));
-      // widgets.add(Row(children: [Text("site:- ${products[i]["link"]}")]));
 
     }
     return widgets;
   }
 
   static dynamic products = "";
+
 }
+
+
+

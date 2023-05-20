@@ -15,6 +15,7 @@ class _ProductsState extends State<Products> {
   }
 }
 
+//Create the class which name is product detail its work show the product data on the server
 class ProductDeatil extends StatefulWidget {
   const ProductDeatil({Key? key}) : super(key: key);
 
@@ -23,15 +24,33 @@ class ProductDeatil extends StatefulWidget {
 }
 
 class _ProductDeatilState extends State<ProductDeatil> {
-  //final url = Uri.https("gist.githubusercontent.com", link, {});
-  //String link="/shubhamgitvns/3935c8fe5f8899d7f4c5bb7a8bc9a175/raw/5219e76d03ad6f5639b9bd0c49bd90896e9061d3/shoe.json";
-  //var productsarray = Utilities.products["products"];
+//create the var using in json file
+   dynamic productno = "";
+   dynamic name="";
+   dynamic price="";
+   dynamic size="";
+   dynamic color="";
+
+
   @override
   Widget build(BuildContext context) {
+    //Assign the json data in the var and show on the server
+    productno=Utilities.productdetail["productno"];
+    name=Utilities.productdetail["name"];
+    price=Utilities.productdetail["price"];
+    size=Utilities.productdetail["size"];
+    color=Utilities.productdetail["color"];
+
     return Column(
       children: [
-        Row(children: [Text("hello")],)
+        Text("Product no:-$productno"),
+        Text("Product name:-$name"),
+        Text("Price:-$price"),
+        Text("Size:-$size"),
+        Text("Color:-$color"),
       ],
     );
   }
 }
+
+
