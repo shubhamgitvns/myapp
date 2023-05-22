@@ -25,6 +25,7 @@ class ProductDeatil extends StatefulWidget {
 
 class _ProductDeatilState extends State<ProductDeatil> {
 //create the var using in json file
+   dynamic img="";
    dynamic productno = "";
    dynamic name="";
    dynamic price="";
@@ -35,6 +36,7 @@ class _ProductDeatilState extends State<ProductDeatil> {
   @override
   Widget build(BuildContext context) {
     //Assign the json data in the var and show on the server
+    productno=Utilities.productdetail["img"];
     productno=Utilities.productdetail["productno"];
     name=Utilities.productdetail["name"];
     price=Utilities.productdetail["price"];
@@ -43,6 +45,7 @@ class _ProductDeatilState extends State<ProductDeatil> {
 
     return Column(
       children: [
+        Image.network("https://avatars.githubusercontent.com/u/77607083?s=200&v=4"),
         Text("Product no:-$productno"),
         Text("Product name:-$name"),
         Text("Price:-$price"),

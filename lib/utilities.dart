@@ -15,7 +15,6 @@ class Utilities {
     for (int i = 0; i <= n - 1; i++) {
       var site = products[i]["site"];
       var link = products[i]["link"];
-
       widgets.add(Row(children: [Text("productno:- ${products[i]["productno"]}")]));
       widgets.add(Row(children: [
         Text("name:- ${products[i]["name"]}"),
