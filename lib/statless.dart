@@ -3,14 +3,16 @@ import 'package:myapp/staefull.dart';
 
 import 'main.dart';
 class VSJApp extends StatelessWidget {
-  VSJHomePage vsjHomePage = VSJHomePage(title: 'Varanasi Software Junction');
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "Api", // this title work like a html title
       debugShowCheckedModeBanner: false,
-      title: 'Varanasi Software Junction',
-      home: vsjHomePage,
+     theme: ThemeData(
+       primaryColor: Colors.blue,
+     ),
+      home: const HomeScreen(),
     );
   }
 }

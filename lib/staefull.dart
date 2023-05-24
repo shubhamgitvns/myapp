@@ -1,185 +1,59 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
 
-class VSJHomePage extends StatefulWidget {
-  //http://openweathermap.org/img/w/10d.png
-  bool weatherfound = true;
-  String currenticon = "";
-  String result = "";
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-  //*****************************************************************************************
-  final String vsjurl =
-      "https://3.bp.blogspot.com/-py5FbTZgvjo/YDi1bsQq16I/AAAAAAAACB0/BxejbJBcHA4AVfkB33WYC3YlVmxElM7BwCK4BGAYYCw/s1600/Varanasi%2BSoftware%2BJunction%2BPhone%2BLogo.png";
-  String currenturl =
-      "https://3.bp.blogspot.com/-py5FbTZgvjo/YDi1bsQq16I/AAAAAAAACB0/BxejbJBcHA4AVfkB33WYC3YlVmxElM7BwCK4BGAYYCw/s1600/Varanasi%2BSoftware%2BJunction%2BPhone%2BLogo.png";
-
-
-  Future<bool> getWeather(String cityname) async {
-    String apikey = "829aa577391b1c7045d0d3d6c7e35002";
-    final url = Uri.https("api.openweathermap.org", "/data/2.5/forecast",
-        {'q': cityname, 'appid': apikey, 'units': 'metric'});
-
-    try {
-      final response = await http.get(url);
-      print(response);
-      print(response.statusCode);
-      final jsonResponse = convert.jsonDecode(response.body);
-     // print(jsonResponse);
-      print(jsonResponse.runtimeType);
-      Map<String, dynamic> map = jsonResponse;
-      print(map.keys);
-      for (String key in map.keys) {
-        dynamic value = map[key];
-      //  print(key + " = " + value.toString());
-      }
-     // print("icon" + map["list"][0]["weather"][0]["icon"].toString());
-      currenticon = map["list"][0]["weather"][0]["icon"].toString();
-      currentcitytemp = map["list"][0]["main"]["temp"].toString();
-      currentmaxtemp = map["list"][0]["main"]["temp_max"].toString();
-      currentmintemp = map["list"][0]["main"]["temp_min"].toString();
-      description = map["list"][0]["weather"][0]["description"].toString();
-      weatherfound = true;
-      result="Found the city name";
-
-      return true;
-    } catch (ex) {
-      print(ex);
-      weatherfound = false;
-      currentcitytemp = "-";
-      currentmaxtemp = "-";
-      currentmintemp = "-";
-      description = "-";
-      result="Error";
-      return false;
-    }
-  }
-
-  //*****************************************************************************************
-  VSJHomePage({Key? key, required this.title}) : super(key: key);
-
-  final TextEditingController _controller =
-  TextEditingController(text: 'Varanasi');
-
-
-  String cityname = "";
-  String currentcitytemp = "-";
-  String currentmaxtemp = "-";
-  String currentmintemp = "-";
-  String description = "-";
-  MainAxisAlignment mainaxisalignment = MainAxisAlignment.start;
-  final String title;
   @override
-  _VSJPageState createState() => _VSJPageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _VSJPageState extends State<VSJHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
+List<Photos> photoslist=[]; //photo list array
+
+Future<List<Photos>> getPhotos () async{ //getPhotos calling method
+  final response =  await http.get(Uri.parse("https://jsonplaceholder.typicode.com/photos"));//link
+  var data=jsonDecode(response.body.toString());
+    //print(response.body);
+  if(response.statusCode==200){
+    print(response.statusCode);
+    for(Map i in data){ //create the for loop show all array data
+      Photos photos = Photos(title: i["title"], url: i["url"], id: i["id"]);//create the data key
+      photoslist.add(photos); // add the data kes in photos list[]
+    }
+    return photoslist;
+  }else{
+    return photoslist;
+  }
+
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Weather-App"),
+        title: Text("VSJ App"),
         centerTitle: true,
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-              Text("City Name: "),
-              Expanded(
-                  flex: 2,
-                  child: TextField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Enter the city name',// this work like a placeholder
-                      ),
-                      onChanged: (text) {
-                        widget.cityname = text;
-                      })),
-              Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      child: const Text("Get Weather"),
-                      onPressed: () async {
-                        await widget.getWeather(widget.cityname);
-                        setState(() {});
-                      },
-                    ),
-                  )),
-            ]),
-          ),
           Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Current Temp"),
-                          Text(widget.currentcitytemp),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Max Temp"),
-                          Text(widget.currentmaxtemp),
-                        ], //Children
-                      ), //Column
-                    ), //Padding
-                  ), //Expanded
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Min Temp"),
-                          Text(widget.currentmintemp),
-                        ], //Children
-                      ), //Column
-                    ), //Padding
-                  ), //Expanded
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Description"),
-                          Text(widget.description),
-                        ], //Children
-                      ), //Column
-                    ), //Padding
-                  ), //Expanded
-
-                ] //
+        child:FutureBuilder( //data builder method
+         future: getPhotos(),
+           builder: (context,AsyncSnapshot<List<Photos>> snapshot){  //build the data using AsyncSnapshot
+          return ListView.builder( // list view Builder
+            itemCount: photoslist.length, //items length
+              itemBuilder: (context,index){
+            return ListTile(  //data list
+              leading:CircleAvatar( //create img in circle structure
+                backgroundImage: NetworkImage(snapshot.data![index].url.toString()),
                 ),
-              )),
-          
-          Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      Text("Result"),
-
-                      Text(widget.result),
-                    ], //Children
-                  ), //Column
-                ), //Padding
-              ), //Expa
-            ],
+              subtitle: Text(snapshot.data![index].id.toString()) ,
+              title: Text(snapshot.data![index].title.toString()),
+            );
+          });
+          })
           )
 
         ],
@@ -187,3 +61,12 @@ class _VSJPageState extends State<VSJHomePage> {
     );
   }
 }
+
+class Photos{
+   String title,url;
+   int id;
+   //class constructor
+   Photos({required this.title,required this.url,required this.id});
+
+}
+
