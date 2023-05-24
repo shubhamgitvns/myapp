@@ -12,7 +12,7 @@ class VSJApp extends StatelessWidget {
      theme: ThemeData(
        primaryColor: Colors.blue,
      ),
-      home: const HomeScreen(),
+      home: const ComplexData(),
     );
   }
 }
