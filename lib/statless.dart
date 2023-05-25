@@ -3,17 +3,14 @@ import 'package:myapp/staefull.dart';
 
 import 'main.dart';
 class VSJApp extends StatelessWidget {
+  VSJHomePage vsjHomePage = VSJHomePage(title: 'SWApi');
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Api", // this title work like a html title
       debugShowCheckedModeBanner: false,
-     theme: ThemeData(
-       primaryColor: Colors.blue,
-     ),
-      home: const ComplexData(),
+      title: 'Complex API',
+      home: vsjHomePage,
     );
   }
 }
-
