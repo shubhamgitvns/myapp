@@ -1,75 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/utilities.dart';
+class Controler extends StatefulWidget {
+  //Call the class object in stateful widget
+  Employee e=Employee(name:"Sachin",address:"Mumbai",age:50,
+      post: "Batsman",salary:1000 );
 
-class SecondPage extends StatefulWidget  {
-  Book b = Book("Mobile Development", 800);
-
-  SecondPage({Key? key}) : super(key: key);
-
-  @override
-  State<SecondPage> createState() => _SecondPageState();
-}
-
-class _SecondPageState extends State<SecondPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.green[800],
-          title: const Text("Second Page"),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            Row(
-              children: [
-                Text("Name ${Utilities.currentbook.name}"),
-                Expanded(
-                   child: ElevatedButton(
-                      child: const Text('First Page'),
-                      onPressed: () {
-                        Utilities.currentbook.name +='a';
-                        Navigator.pushNamed(context, '/second');
-                      }),
-                )
-              ],
-            ),
-
-            Text("Price ${Utilities.currentbook.price}"),
-          ],
-        ));
-  }
-}
-
-class ThirdPage extends StatefulWidget {
-  Book b = Book("Mobile Development", 800);
-  ThirdPage({Key? key}) : super(key: key);
+  Controler({Key? key}) : super(key: key);
 
   @override
-  State<ThirdPage> createState() => _ThirdPageState();
+  State<Controler> createState() => _ControlerState();
+  int value=0;
+
 }
 
-class _ThirdPageState extends State<ThirdPage> {
+class _ControlerState extends State<Controler> {
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.yellow[800],
-          title: const Text("Third Page"),
-          centerTitle: true,
-        ),
-        body: Column(
-          children: [
-            Text("Name ${Utilities.currentbook.name}"),
-            Text("Price ${Utilities.currentbook.price}"),
-          ],
-        ));
-  }
-}
+    return Column(
+      children: [
+        //call the class object
+        Text("${widget.e.name}"),
+        Text("${widget.e.address}"),
+        Text("${widget.e.age}"),
+        Text("${widget.e.salary}"),
+        Text("${widget.e.post}"),
+        //counter call
+        Text("${widget.value}count"),
 
-class Book {
-  String name;
-  int price;
-  Book(this.name, this.price);
+        Row(
+          children: [
+
+            Expanded(
+                child:ElevatedButton(
+                  child: Text("press"),
+                  onPressed: () async{
+                    await for (dynamic count in counter()) {
+                      widget.value=count;
+                      setState(() {
+
+                      });
+                      print(count);
+                    }
+
+                  },) )
+          ],
+        )
+      ],
+
+
+    );
+  }
 }
