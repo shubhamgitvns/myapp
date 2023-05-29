@@ -16,36 +16,36 @@ class MyApp extends StatelessWidget {
           title: Text("App"),
           centerTitle: true,
         ),
-        body: Column(
+        body:Column(
 
-          children: [
-            RichText(
-              text: TextSpan(
-                text: 'Hello ',
-                style: DefaultTextStyle.of(context).style,
-                children: const <TextSpan>[
-                  TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20,color: Colors.cyan)),
-                  TextSpan(text: ' world!',style: TextStyle(fontStyle: FontStyle.italic)),
-                  TextSpan(
-                      text: 'Style',
-                    style: TextStyle(color: Colors.black54,
-                      decoration: TextDecoration.underline,
-                      decorationColor: Colors.red,
-                      decorationStyle: TextDecorationStyle.dashed,
-                    ),
-                      ),
-                ],
-              ),
-            ),
+    children: [
+    Stack(
+    children: <Widget>[
+    // Stroked text as border.
+    Text(
+    'Greetings, planet!',
+    style: TextStyle(
+    fontSize: 40,
+    foreground: Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 6
+    ..color = Colors.blue[700]!,
+    ),
+    ),
 
-
-          ],
-        ),
-
-
+    // Solid text as fill.
+    Text(
+    'Greetings, planet!',
+    style: TextStyle(
+    fontSize: 30,
+    color: Colors.grey[300],
+    ),
+    ),
+    ],
+    ),
+    ],
+    ),
       ),
     );
   }
 }
-
-
