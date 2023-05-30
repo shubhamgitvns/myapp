@@ -1,61 +1,55 @@
 import 'package:flutter/material.dart';
-class RefreshIndicatorExampleApp extends StatelessWidget {
-  const RefreshIndicatorExampleApp({super.key});
+
+class ReorderableApp extends StatelessWidget {
+  const ReorderableApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: RefreshIndicatorExample(),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('ReorderableListView Sample')),
+        body: const ReorderableExample(),
+      ),
     );
   }
 }
 
-class RefreshIndicatorExample extends StatefulWidget {
-  const RefreshIndicatorExample({super.key});
+
+class ReorderableExample extends StatefulWidget {
+  const ReorderableExample({super.key});
 
   @override
-  State<RefreshIndicatorExample> createState() =>
-      _RefreshIndicatorExampleState();
+  State<ReorderableExample> createState() => _ReorderableListViewExampleState();
 }
 
-class _RefreshIndicatorExampleState extends State<RefreshIndicatorExample> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
+class _ReorderableListViewExampleState extends State<ReorderableExample> {
+  final List<int> _items = List<int>.generate(10, (int index) => index);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('RefreshIndicator Sample'),
-      ),
-      body: RefreshIndicator( //refresh indicator class
-        key: _refreshIndicatorKey,
-        color: Colors.red,
-        backgroundColor: Colors.blue,
-        strokeWidth: 2.0,
-        onRefresh: () async {
-          // Replace this delay with the code to be executed during refresh
-          // and return a Future when code finishes execution.
-          return Future<void>.delayed(const Duration(seconds: 3));
-        },
-        // Pull from top to show refresh indicator.
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text('Item $index'),
-            );
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // Show refresh indicator programmatically on button tap.
-          _refreshIndicatorKey.currentState?.show();
-        },
-        icon: const Icon(Icons.refresh),
-        label: const Text('Show Indicator'),
-      ),
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
+    final Color oddItemColor = colorScheme.primary.withOpacity(0.05);
+    final Color evenItemColor = colorScheme.primary.withOpacity(0.15);
+
+    return ReorderableListView(
+      padding: const EdgeInsets.symmetric(horizontal: 80),
+      children: <Widget>[
+        for (int index = 0; index < _items.length; index += 1)
+          ListTile(
+            key: Key('$index'),
+            tileColor: _items[index].isOdd ? oddItemColor : evenItemColor,
+            title: Text('Item ${_items[index]}'),
+          ),
+      ],
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          final int item = _items.removeAt(oldIndex);
+          _items.insert(newIndex, item);
+        });
+      },
     );
   }
 }
