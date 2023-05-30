@@ -31,47 +31,25 @@ class Adder extends StatefulWidget {
 }
 
 class _AdderState extends State<Adder> {
-  String a = "", b = "";
-  String result = "";
-  void add() {
-    try {
-      result = (int.parse(a) + int.parse(b)).toString();
-    } catch (e) {
-      result = "";
-    }
-    setState(() {});
-  }
 
-  void sub() {
-    try {
-      result = (int.parse(a) - int.parse(b)).toString();
-    } catch (e) {
-      result = "";
-    }
-    setState(() {});
-  }
+
+  final List<String> entries = <String>['A', 'B', 'C','d'];//create a list show list name
+  final List<int> colorCodes = <int>[600, 500, 100,50];//create the list show color code
+
 
   @override
   Widget build(BuildContext context) {
-    return ListView(  //single ListView include multiple container
+    return ListView.separated(
       padding: const EdgeInsets.all(8),
-      children: <Widget>[
-        Container( // first container
+      itemCount: entries.length, //item length
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
           height: 50,
-          color: Colors.amber[600],
-          child: const Center(child: Text('Entry A')),
-        ),
-        Container( //second container
-          height: 50,
-          color: Colors.amber[500],
-          child: const Center(child: Text('Entry B')),
-        ),
-        Container( //third container
-          height: 50,
-          color: Colors.amber[100],
-          child: const Center(child: Text('Entry C')),
-        ),
-      ],
+          color: Colors.amber[colorCodes[index]],
+          child: Center(child: Text('Entry ${entries[index]}')),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) => const Divider(),
     );
   }
 }
