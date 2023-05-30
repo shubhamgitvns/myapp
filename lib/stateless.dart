@@ -1,41 +1,61 @@
 import 'package:flutter/material.dart';
-
-class PageViewExampleApp extends StatelessWidget {
-  const PageViewExampleApp({super.key});
+class RefreshIndicatorExampleApp extends StatelessWidget {
+  const RefreshIndicatorExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: const Text('PageView Sample')),
-        body: const PageViewExample(),
-      ),
+    return const MaterialApp(
+      home: RefreshIndicatorExample(),
     );
   }
 }
 
+class RefreshIndicatorExample extends StatefulWidget {
+  const RefreshIndicatorExample({super.key});
 
-class PageViewExample extends StatelessWidget {
-  const PageViewExample({super.key});
+  @override
+  State<RefreshIndicatorExample> createState() =>
+      _RefreshIndicatorExampleState();
+}
+
+class _RefreshIndicatorExampleState extends State<RefreshIndicatorExample> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  GlobalKey<RefreshIndicatorState>();
 
   @override
   Widget build(BuildContext context) {
-    final PageController controller = PageController();//its control the page
-    return PageView( //page view part
-      /// [PageView.scrollDirection] defaults to [Axis.horizontal].
-      /// Use [Axis.vertical] to scroll vertically.
-      controller: controller,
-      children: const <Widget>[
-        Center(
-          child: Text('First Page'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('RefreshIndicator Sample'),
+      ),
+      body: RefreshIndicator( //refresh indicator class
+        key: _refreshIndicatorKey,
+        color: Colors.red,
+        backgroundColor: Colors.blue,
+        strokeWidth: 2.0,
+        onRefresh: () async {
+          // Replace this delay with the code to be executed during refresh
+          // and return a Future when code finishes execution.
+          return Future<void>.delayed(const Duration(seconds: 3));
+        },
+        // Pull from top to show refresh indicator.
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              title: Text('Item $index'),
+            );
+          },
         ),
-        Center(
-          child: Text('Second Page'),
-        ),
-        Center(
-          child: Text('Third Page'),
-        ),
-      ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Show refresh indicator programmatically on button tap.
+          _refreshIndicatorKey.currentState?.show();
+        },
+        icon: const Icon(Icons.refresh),
+        label: const Text('Show Indicator'),
+      ),
     );
   }
 }
