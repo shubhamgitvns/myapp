@@ -5,7 +5,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   MyApp({Key? key}) : super(key: key);
 
   @override
@@ -43,79 +42,34 @@ class _AdderState extends State<Adder> {
     setState(() {});
   }
 
-  void sub(){
-    try{
-      result=(int.parse(a) - int.parse(b)).toString();
-    }catch(e){
-      result="";
+  void sub() {
+    try {
+      result = (int.parse(a) - int.parse(b)).toString();
+    } catch (e) {
+      result = "";
     }
     setState(() {});
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              //size box like a container
-              width: 200,
-
-              child: TextField(
-                  keyboardType: TextInputType
-                      .number, // input type work in mobile keyboard
-                  onChanged: (value) {
-                    print(value);
-                    a = value;
-                   // calculate();
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'A', //label text work like a placeholder in css
-                  )),
-            ),
-            SizedBox(
-              //size box like a container
-              width: 200,
-
-              child: TextField(
-                  keyboardType: TextInputType
-                      .number, // input type work in mobile keyboard
-                  onChanged: (value) {
-                    //print entered value in console
-                    print(value);
-                    b = value;
-                   // calculate();
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'B', //label text work like a placeholder in css
-                  )),
-            ),
-            Text(result),
-            ElevatedButton(
-                onPressed:(){
-                  add();
-                  print(result);
-
-            },
-                child: Text("Add")
-            ),
-
-            ElevatedButton(
-                onPressed:(){
-                  sub();
-                  print( result);
-
-                },
-                child: Text("Sub")
-            ),
-          ],
+    return ListView(  //single ListView include multiple container
+      padding: const EdgeInsets.all(8),
+      children: <Widget>[
+        Container( // first container
+          height: 50,
+          color: Colors.amber[600],
+          child: const Center(child: Text('Entry A')),
+        ),
+        Container( //second container
+          height: 50,
+          color: Colors.amber[500],
+          child: const Center(child: Text('Entry B')),
+        ),
+        Container( //third container
+          height: 50,
+          color: Colors.amber[100],
+          child: const Center(child: Text('Entry C')),
         ),
       ],
     );
