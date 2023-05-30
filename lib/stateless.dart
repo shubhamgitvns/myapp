@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 
-
-
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class PageViewExampleApp extends StatelessWidget {
+  const PageViewExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('DraggableScrollableSheet'),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('PageView Sample')),
+        body: const PageViewExample(),
       ),
-      body: SizedBox.expand(
-        child: DraggableScrollableSheet(  //DraggableScrollableSheet
-          builder: (BuildContext context, ScrollController scrollController) {
-            return Container(
-              color: Colors.blue[100],
-              child: ListView.builder(
-                controller: scrollController,
-                itemCount: 25,
-                itemBuilder: (BuildContext context, int index) {
-                  return ListTile(title: Text('Item $index'));
-                },
-              ),
-            );
-          },
+    );
+  }
+}
+
+
+class PageViewExample extends StatelessWidget {
+  const PageViewExample({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final PageController controller = PageController();//its control the page
+    return PageView( //page view part
+      /// [PageView.scrollDirection] defaults to [Axis.horizontal].
+      /// Use [Axis.vertical] to scroll vertically.
+      controller: controller,
+      children: const <Widget>[
+        Center(
+          child: Text('First Page'),
         ),
-      ),
+        Center(
+          child: Text('Second Page'),
+        ),
+        Center(
+          child: Text('Third Page'),
+        ),
+      ],
     );
   }
 }
